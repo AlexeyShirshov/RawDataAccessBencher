@@ -8,7 +8,7 @@ The results of various runs of the benchmark are available as files in the repos
 
 ### Requirements ###
 
-.NET 4.8.0 and .NET 5.0, SQL Server with AdventureWorks example database (2008 version, available on [Github](https://github.com/Microsoft/sql-server-samples/releases/tag/adventureworks)). See below how to install/configure it. The mappings supplied are for the 2008 version of the example database. 
+.NET 10 SDK (the solution targets `net10.0` on every platform), SQL Server with AdventureWorks example database (2008 version, available on [Github](https://github.com/Microsoft/sql-server-samples/releases/tag/adventureworks)). See below how to install/configure it. The mappings supplied are for the 2008 version of the example database. 
 
 ### How to attach / install the database ###
 
@@ -20,12 +20,13 @@ Install SQL Server 2008 or higher and download the 2008 version of the database 
 
 Please run the benchmarks on a DB accessed over a network to avoid having the DB consume performance of the CPU / memory which thus doesn't give a real-life scenario overview of the real fetch speed of the used Data-access / ORM framework. The entity SalesOrderHeader was chosen as it has more than a couple of fields, a variety of types, many rows in the table and several relationships with other entities which could or could not affect the ORM's internal performance. 
 
-If you want to export the results to a file directly, run the RawBencher.exe from the command line and specify /a at the end so it will exit immediately when it's done. Example: `RawBencher.exe /a > results.txt`
+If you want to export the results to a file directly, run the RawBencher from the command line and specify /a at the end so it will exit immediately when it's done. Example: `dotnet run --project RawBencher -c Release -- /a > results.txt` (or run the built `RawBencher` executable the same way).
 
 ### 'Framework X isn't there anymore, why?'
 
 * CodeFluent Entities was part of the code base, but has been removed, as they kept the connection open during individual fetches, which gave them an unfair advantage. 
 * In previous versions the Telerik Open Access ORM was present, however compiling the code is impossible without the 'enhancer' tool of Telerik present on the system. To make it easier for people to download and compile the code, we therefore removed the Telerik bencher. If you want them, browse to a previous commit and pull the bencher classes and model from there. 
+* LINQ to SQL was removed when the solution moved to .NET 10: `System.Data.Linq` doesn't exist on .NET and there's no port of the LINQ to SQL runtime, so the generated data context and its two benchers can't run there. Browse to a previous commit if you need them. 
 
 ### Remarks about the benchmark results
 

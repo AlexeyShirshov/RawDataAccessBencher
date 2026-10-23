@@ -1,4 +1,4 @@
-//////////////////////////
+﻿//////////////////////////
 // used in both RawBencher and RawBencher.Core
 //////////////////////////
 
@@ -82,16 +82,14 @@ namespace RawBencher
             RegisteredBenchers.Add(new EntityFrameworkNoChangeTrackingBencher(){ConnectionStringToUse = ConnectionStringEF6});
             RegisteredBenchers.Add(new EntityFrameworkNormalBencher(){ConnectionStringToUse = ConnectionStringEF6});
             RegisteredBenchers.Add(new NHibernateNormalBencher());
+            RegisteredBenchers.Add(new MassiveBencher());
 
 #if NETCOREAPP
 			RegisteredBenchers.Add(new EntityFrameworkCoreNoChangeTrackingBencher(ConnectionString));
 			RegisteredBenchers.Add(new EntityFrameworkCoreNoChangeTrackingCompiledQueryBencher(ConnectionString));
 			RegisteredBenchers.Add(new EntityFrameworkCoreNormalBencher(ConnectionString));
 			RegisteredBenchers.Add(new EntityFrameworkCoreDTOBencher(ConnectionString));
-#else
-			RegisteredBenchers.Add(new MassiveBencher());
-			RegisteredBenchers.Add(new LinqToSqlNoChangeTrackingBencher());
-			RegisteredBenchers.Add(new LinqToSqlNormalBencher());
+			RegisteredBenchers.Add(new NextOrmBencher(ConnectionString));
 #endif
 			BenchController.DisplayHeader();
 			BenchController.WarmupDB();

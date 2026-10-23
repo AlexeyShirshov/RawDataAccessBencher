@@ -158,6 +158,11 @@ namespace VanillaMassive {
 			if(!string.IsNullOrWhiteSpace(ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName))
 				_providerName = ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName;
 
+			// Unlike .NET Framework, .NET doesn't pre-register the ADO.NET providers; register the one Massive uses.
+			if(!DbProviderFactories.GetProviderInvariantNames().Contains(_providerName))
+			{
+				DbProviderFactories.RegisterFactory(_providerName, System.Data.SqlClient.SqlClientFactory.Instance);
+			}
 			_factory = DbProviderFactories.GetFactory(_providerName);
 			ConnectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
 		}
